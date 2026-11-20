@@ -1,0 +1,1149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>MKMANAGEMENT — Book. Match. Done.</title>
+    <meta name="description" content="MKMANAGEMENT by Middleton Solutions: pick a service, get matched with a pro and a live itemized quote, book and pay. The service call creates the estimate." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --blue:#032B44;
+        --blue-deep:#021C2E;
+        --green:#3E8E41;
+        --green-dark:#2F7033;
+        --gold:#FFD700;
+        --helio:linear-gradient(100deg,#6D5DF6 0%,#B565D8 52%,#DF73FF 100%);
+        --bg:#EDF2F6;
+        --surface:#FFFFFF;
+        --surface-2:#F4F8FA;
+        --ink:#0A2233;
+        --muted:#4C6373;
+        --faint:#7E93A1;
+        --line:#D5E0E7;
+        --line-strong:#B9CBD6;
+        --ok:#2F7033;
+        --warn:#9A6B00;
+        --bad:#B3261E;
+        --shadow:0 18px 44px -18px rgba(3,43,68,.28);
+        --shadow-sm:0 6px 18px -8px rgba(3,43,68,.22);
+        --radius:14px;
+        color-scheme:light;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#02141F;
+          --surface:#06283E;
+          --surface-2:#0A3049;
+          --ink:#EAF3F8;
+          --muted:#A7BECB;
+          --faint:#7E97A6;
+          --line:#11405C;
+          --line-strong:#1D557A;
+          --ok:#7CC483;
+          --warn:#FFD700;
+          --bad:#FF9D94;
+          --shadow:0 18px 44px -18px rgba(0,0,0,.6);
+          --shadow-sm:0 6px 18px -8px rgba(0,0,0,.5);
+          color-scheme:dark;
+        }
+      }
+      *{ box-sizing:border-box; }
+      html{ scroll-behavior:smooth; }
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+        font-size:16px; line-height:1.5;
+        -webkit-font-smoothing:antialiased;
+      }
+      button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]),textarea{ min-height:2.25rem; }
+      button{ font:inherit; cursor:pointer; }
+      input,select,textarea{ font:inherit; color:var(--ink); }
+      .mono{ font-family:"IBM Plex Mono",ui-monospace,monospace; }
+      a{ color:var(--green-dark); }
+      @media (prefers-color-scheme: dark){ a{ color:#7CC483; } }
+
+      /* ---------- Top bar ---------- */
+      .topbar{
+        position:sticky; top:0; z-index:40;
+        background:var(--blue); color:#EAF3F8;
+        border-bottom:3px solid transparent;
+        border-image:var(--helio) 1;
+      }
+      .topbar-in{
+        max-width:1180px; margin:0 auto; padding:.65rem 1rem;
+        display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+      }
+      .brand{ display:flex; align-items:center; gap:.6rem; text-decoration:none; color:#EAF3F8; }
+      .brand-name{ font-weight:900; letter-spacing:.06em; font-size:1.06rem; }
+      .brand-name span{ color:var(--gold); }
+      .brand-sub{ display:block; font-size:.66rem; font-weight:600; letter-spacing:.18em; color:#9FC0D4; text-transform:uppercase; }
+      .tabs{ display:flex; gap:.35rem; margin-left:auto; flex-wrap:wrap; }
+      .tab{
+        border:1px solid rgba(255,255,255,.25); background:transparent; color:#DCEBF4;
+        padding:.45rem .9rem; border-radius:999px; font-weight:700; font-size:.9rem;
+        display:inline-flex; align-items:center; gap:.45rem; min-height:2.5rem;
+      }
+      .tab:hover{ border-color:rgba(255,255,255,.55); }
+      .tab[aria-selected="true"]{ background:#fff; color:var(--blue); border-color:#fff; }
+      .tab .count{
+        background:var(--green); color:#fff; border-radius:999px; font-size:.72rem;
+        padding:.05rem .45rem; font-weight:800;
+      }
+      .tab[aria-selected="true"] .count{ background:var(--blue); }
+      .apex-pill{
+        display:inline-flex; align-items:center; gap:.4rem;
+        background:rgba(255,215,0,.14); border:1px solid rgba(255,215,0,.55);
+        color:var(--gold); border-radius:999px; padding:.45rem .85rem; font-weight:800; font-size:.9rem;
+        min-height:2.5rem;
+      }
+      .apex-pill svg{ flex:none; }
+
+      /* ---------- Layout ---------- */
+      .wrap{ max-width:1180px; margin:0 auto; padding:0 1rem 4rem; }
+      .view{ display:none; }
+      .view.active{ display:block; }
+
+      /* ---------- Hero ---------- */
+      .hero{
+        margin:1.4rem 0 1.6rem; border-radius:20px; overflow:hidden;
+        background:var(--blue); color:#EAF3F8; box-shadow:var(--shadow);
+        position:relative;
+      }
+      .hero-in{ padding:2.2rem 1.6rem 1.8rem; position:relative; z-index:1; }
+      .hero-wave{ position:absolute; left:0; right:0; bottom:-6px; opacity:.5; z-index:0; }
+      .hero h1{
+        margin:0 0 .6rem; font-size:clamp(1.9rem,4.6vw,3.1rem); line-height:1.04;
+        font-weight:900; letter-spacing:-.01em; max-width:16ch;
+      }
+      .hero h1 .grad{
+        background:var(--helio); -webkit-background-clip:text; background-clip:text; color:transparent;
+      }
+      .hero p{ margin:0; max-width:56ch; color:#C4DCEA; font-size:1.02rem; }
+      .hero-stats{ display:flex; gap:1.6rem; flex-wrap:wrap; margin-top:1.4rem; }
+      .hero-stat b{ display:block; font-size:1.35rem; font-weight:900; color:#fff; }
+      .hero-stat span{ font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:#9FC0D4; font-weight:600; }
+      .loop-strip{
+        display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem; align-items:center;
+        font-size:.85rem; font-weight:700;
+      }
+      .loop-strip .step-chip{
+        background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.22);
+        border-radius:999px; padding:.35rem .8rem;
+      }
+      .loop-strip .arrow{ color:var(--gold); font-weight:900; }
+
+      /* ---------- Wizard ---------- */
+      .card{
+        background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+        box-shadow:var(--shadow-sm);
+      }
+      .wizard{ padding:1.3rem; }
+      .wiz-steps{ display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:1.3rem; }
+      .wiz-step{
+        display:flex; align-items:center; gap:.5rem; font-weight:700; font-size:.88rem;
+        color:var(--faint); padding:.4rem .7rem .4rem .45rem; border-radius:999px; border:1px solid transparent;
+      }
+      .wiz-step .n{
+        width:1.65rem; height:1.65rem; border-radius:50%; display:grid; place-items:center;
+        background:var(--surface-2); border:1px solid var(--line-strong); font-size:.8rem; font-weight:800; flex:none;
+      }
+      .wiz-step.on{ color:var(--ink); border-color:var(--line); background:var(--surface-2); }
+      .wiz-step.on .n{ background:var(--blue); color:#fff; border-color:var(--blue); }
+      .wiz-step.done{ color:var(--ok); }
+      .wiz-step.done .n{ background:var(--green); border-color:var(--green); color:#fff; }
+      .panel{ display:none; }
+      .panel.on{ display:block; }
+      .panel h2{ margin:.1rem 0 .3rem; font-size:1.35rem; font-weight:800; letter-spacing:-.01em; }
+      .panel .lede{ margin:0 0 1.1rem; color:var(--muted); max-width:62ch; }
+      .wiz-nav{ display:flex; gap:.6rem; margin-top:1.4rem; flex-wrap:wrap; }
+      .btn{
+        border-radius:10px; border:1px solid var(--line-strong); background:var(--surface);
+        color:var(--ink); font-weight:700; padding:.6rem 1.15rem; min-height:2.75rem;
+        display:inline-flex; align-items:center; gap:.5rem; justify-content:center;
+      }
+      .btn:hover{ border-color:var(--faint); }
+      .btn.primary{ background:var(--green); border-color:var(--green); color:#fff; }
+      .btn.primary:hover{ background:var(--green-dark); border-color:var(--green-dark); }
+      .btn.blue{ background:var(--blue); border-color:var(--blue); color:#fff; }
+      .btn.blue:hover{ background:#0A4066; }
+      .btn.gold{ background:var(--gold); border-color:var(--gold); color:#231a00; }
+      .btn.ghost-danger{ color:var(--bad); border-color:var(--line-strong); }
+      .btn:disabled{ opacity:.45; cursor:not-allowed; }
+      .btn.small{ min-height:2.4rem; padding:.4rem .85rem; font-size:.88rem; }
+      .form-error{ color:var(--bad); font-weight:600; font-size:.9rem; min-height:1.2em; margin-top:.6rem; }
+
+      /* Service grid */
+      .svc-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:.8rem; }
+      .svc{
+        text-align:left; border:1.5px solid var(--line); border-radius:12px; background:var(--surface);
+        padding:1rem; display:flex; flex-direction:column; gap:.35rem; min-height:8.2rem;
+      }
+      .svc:hover{ border-color:var(--line-strong); }
+      .svc.sel{ border-color:var(--green); box-shadow:0 0 0 3px rgba(62,142,65,.18); }
+      .svc .ic{
+        width:2.5rem; height:2.5rem; border-radius:9px; background:var(--blue); color:#fff;
+        display:grid; place-items:center;
+      }
+      .svc.sel .ic{ background:var(--green); }
+      .svc b{ font-size:1.05rem; }
+      .svc .blurb{ color:var(--muted); font-size:.86rem; line-height:1.4; flex:1; }
+      .svc .rate{ font-weight:800; }
+      .svc .rate small{ color:var(--faint); font-weight:600; }
+
+      /* Forms */
+      .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+      @media (max-width:680px){ .form-grid{ grid-template-columns:1fr; } }
+      .field label{ display:block; font-weight:700; font-size:.86rem; margin-bottom:.35rem; }
+      .field input,.field select,.field textarea{
+        width:100%; border:1.5px solid var(--line-strong); border-radius:9px; background:var(--surface);
+        padding:.55rem .7rem;
+      }
+      .field textarea{ min-height:5.2rem; resize:vertical; }
+      .field .hint{ font-size:.8rem; color:var(--faint); margin-top:.3rem; }
+      .choice-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem; }
+      @media (max-width:680px){ .choice-row{ grid-template-columns:1fr; } }
+      .choice{
+        border:1.5px solid var(--line); border-radius:10px; padding:.7rem .8rem; background:var(--surface);
+        text-align:left; display:block; width:100%;
+      }
+      .choice b{ display:block; font-size:.95rem; }
+      .choice span{ color:var(--muted); font-size:.82rem; display:block; margin-top:.15rem; }
+      .choice.sel{ border-color:var(--green); box-shadow:0 0 0 3px rgba(62,142,65,.16); }
+      .group-label{ font-weight:800; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:1.2rem 0 .55rem; }
+      .group-label:first-child{ margin-top:0; }
+
+      /* Match + quote */
+      .match-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; align-items:start; }
+      @media (max-width:820px){ .match-grid{ grid-template-columns:1fr; } }
+      .pro-card{ padding:1.1rem; }
+      .pro-head{ display:flex; gap:.9rem; align-items:center; }
+      .avatar{
+        width:3.4rem; height:3.4rem; border-radius:50%; flex:none; display:grid; place-items:center;
+        background:var(--helio); color:#fff; font-weight:900; font-size:1.15rem;
+      }
+      .pro-head b{ font-size:1.1rem; display:block; }
+      .pro-head span{ color:var(--muted); font-size:.88rem; }
+      .pro-meta{ display:flex; gap:1.1rem; flex-wrap:wrap; margin-top:.9rem; }
+      .pro-meta div b{ display:block; font-size:1rem; }
+      .pro-meta div span{ font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); font-weight:600; }
+      .matched-tag{
+        display:inline-flex; align-items:center; gap:.4rem; background:rgba(62,142,65,.13);
+        color:var(--ok); font-weight:800; font-size:.8rem; border-radius:999px; padding:.25rem .7rem;
+      }
+      .quote{ padding:1.1rem; }
+      .quote h3{ margin:0 0 .7rem; font-size:1rem; font-weight:800; }
+      .q-line{ display:flex; justify-content:space-between; gap:1rem; padding:.42rem 0; border-bottom:1px dashed var(--line); font-size:.95rem; }
+      .q-line span{ color:var(--muted); }
+      .q-line b{ white-space:nowrap; }
+      .q-line.discount b{ color:var(--ok); }
+      .q-total{ display:flex; justify-content:space-between; align-items:baseline; padding:.8rem 0 .2rem; }
+      .q-total span{ font-weight:800; }
+      .q-total b{ font-size:1.5rem; font-weight:900; }
+      .q-stars{ display:flex; align-items:center; gap:.45rem; color:var(--warn); font-weight:700; font-size:.9rem; margin-top:.35rem; }
+      .note-box{
+        border:1px solid var(--line); background:var(--surface-2); border-radius:10px;
+        padding:.85rem 1rem; font-size:.92rem; color:var(--muted); margin-top:1rem;
+      }
+      .note-box b{ color:var(--ink); }
+      .apex-apply{
+        display:flex; gap:.7rem; align-items:flex-start; border:1.5px dashed rgba(154,107,0,.55);
+        border-radius:10px; padding:.8rem .95rem; margin-top:1rem; background:rgba(255,215,0,.07);
+      }
+      .apex-apply b{ font-size:.95rem; }
+      .apex-apply p{ margin:.15rem 0 0; font-size:.86rem; color:var(--muted); }
+      .switch{ margin-left:auto; flex:none; }
+      .switch button{ border-radius:999px; border:1.5px solid var(--line-strong); background:var(--surface); font-weight:800; padding:.35rem .9rem; }
+      .switch button.applied{ background:var(--gold); border-color:var(--gold); color:#231a00; }
+
+      /* Success */
+      .success-head{ display:flex; gap:1rem; align-items:center; margin-bottom:1rem; }
+      .success-badge{
+        width:3.4rem; height:3.4rem; border-radius:50%; background:var(--green); color:#fff;
+        display:grid; place-items:center; flex:none;
+      }
+      .ref-chip{ font-family:"IBM Plex Mono",monospace; font-weight:600; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:.2rem .6rem; }
+      .next-steps{ list-style:none; margin:1rem 0 0; padding:0; display:grid; gap:.55rem; }
+      .next-steps li{ display:flex; gap:.7rem; align-items:flex-start; }
+      .next-steps .dot{
+        width:1.5rem; height:1.5rem; border-radius:50%; background:var(--blue); color:#fff; flex:none;
+        display:grid; place-items:center; font-size:.78rem; font-weight:800; margin-top:.1rem;
+      }
+
+      /* How it works */
+      .section-head{ margin:2.4rem 0 1rem; }
+      .section-head h2{ margin:0; font-size:1.6rem; font-weight:900; letter-spacing:-.01em; }
+      .section-head p{ margin:.3rem 0 0; color:var(--muted); max-width:64ch; }
+      .flow-steps{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:.8rem; }
+      .flow-step{ padding:1.05rem; }
+      .flow-step .fn{
+        font-family:"IBM Plex Mono",monospace; font-weight:600; color:#fff; background:var(--helio);
+        width:2rem; height:2rem; border-radius:8px; display:grid; place-items:center; margin-bottom:.6rem;
+      }
+      .flow-step b{ display:block; margin-bottom:.25rem; }
+      .flow-step p{ margin:0; color:var(--muted); font-size:.9rem; }
+      .est-example{ margin-top:1rem; padding:1.2rem; }
+      .est-example .est-head{ display:flex; flex-wrap:wrap; gap:.6rem 1.2rem; align-items:baseline; justify-content:space-between; }
+      .est-example h3{ margin:0; font-size:1.1rem; }
+      .est-example .addr{ color:var(--muted); font-size:.92rem; }
+
+      /* Bookings */
+      .booking{ padding:1.15rem; margin-bottom:1rem; }
+      .booking-top{ display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:baseline; justify-content:space-between; }
+      .booking-top h3{ margin:0; font-size:1.12rem; }
+      .booking-sub{ color:var(--muted); font-size:.9rem; margin-top:.15rem; }
+      .status-pill{ font-weight:800; font-size:.8rem; border-radius:999px; padding:.28rem .75rem; white-space:nowrap; }
+      .st-booked{ background:rgba(3,43,68,.1); color:var(--blue); }
+      @media (prefers-color-scheme: dark){ .st-booked{ background:rgba(255,255,255,.12); color:#BFE0F2; } }
+      .st-progress{ background:rgba(255,215,0,.18); color:var(--warn); }
+      .st-done{ background:rgba(62,142,65,.15); color:var(--ok); }
+      .st-cancelled{ background:rgba(179,38,30,.12); color:var(--bad); }
+      .tracker{ display:flex; align-items:flex-start; margin:1.1rem 0 .4rem; }
+      .tracker .t-step{ flex:1; text-align:center; position:relative; padding-top:1.15rem; font-size:.78rem; font-weight:700; color:var(--faint); }
+      .tracker .t-step::before{
+        content:""; position:absolute; top:.42rem; left:50%; transform:translateX(-50%);
+        width:.85rem; height:.85rem; border-radius:50%; background:var(--surface);
+        border:2.5px solid var(--line-strong); z-index:1;
+      }
+      .tracker .t-step::after{
+        content:""; position:absolute; top:.8rem; left:calc(-50% + .55rem); width:calc(100% - 1.1rem);
+        height:2.5px; background:var(--line-strong);
+      }
+      .tracker .t-step:first-child::after{ display:none; }
+      .tracker .t-step.hit{ color:var(--ok); }
+      .tracker .t-step.hit::before{ background:var(--green); border-color:var(--green); }
+      .tracker .t-step.hit::after{ background:var(--green); }
+      .booking-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.7rem 1.2rem; margin-top:.8rem; }
+      .booking-grid div span{ display:block; font-size:.72rem; letter-spacing:.09em; text-transform:uppercase; color:var(--faint); font-weight:700; }
+      .booking-grid div b{ font-size:.95rem; }
+      .booking-actions{ display:flex; gap:.55rem; flex-wrap:wrap; margin-top:1rem; }
+      .est-box{ margin-top:1rem; border:1.5px solid var(--line-strong); border-radius:12px; padding:1rem; background:var(--surface-2); }
+      .est-box h4{ margin:0 0 .2rem; font-size:1rem; }
+      .est-status{ font-size:.85rem; font-weight:700; color:var(--muted); }
+      .empty{
+        text-align:center; padding:2.6rem 1.2rem; color:var(--muted);
+      }
+      .empty b{ color:var(--ink); display:block; font-size:1.1rem; margin-bottom:.3rem; }
+
+      /* APEX view */
+      .apex-hero{ padding:1.5rem; display:flex; flex-wrap:wrap; gap:1.4rem; align-items:center; background:var(--blue); color:#EAF3F8; border:none; }
+      .apex-balance b{ font-size:3rem; font-weight:900; line-height:1; color:var(--gold); display:flex; align-items:center; gap:.5rem; }
+      .apex-balance span{ font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; color:#9FC0D4; font-weight:700; }
+      .apex-hero p{ margin:0; max-width:44ch; color:#C4DCEA; }
+      .tier-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:.9rem; margin-top:1rem; }
+      .tier{ padding:1.15rem; }
+      .tier .cost{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.85rem; color:var(--warn); }
+      .tier h3{ margin:.35rem 0 .3rem; font-size:1.08rem; }
+      .tier p{ margin:0 0 .8rem; color:var(--muted); font-size:.9rem; }
+      .bar{ height:.55rem; border-radius:999px; background:var(--surface-2); border:1px solid var(--line); overflow:hidden; }
+      .bar i{ display:block; height:100%; background:var(--helio); border-radius:999px; }
+      .bar-label{ font-size:.8rem; color:var(--faint); margin-top:.35rem; font-weight:600; }
+      .history{ margin-top:1rem; padding:1.15rem; }
+      .history h3{ margin:0 0 .6rem; }
+      .history ul{ margin:0; padding:0; list-style:none; }
+      .history li{ display:flex; justify-content:space-between; gap:1rem; padding:.45rem 0; border-bottom:1px dashed var(--line); font-size:.93rem; }
+      .history li:last-child{ border-bottom:none; }
+      .history li span{ color:var(--muted); }
+
+      footer{
+        border-top:1px solid var(--line); margin-top:3rem; padding:1.4rem 0 .5rem;
+        color:var(--muted); font-size:.88rem; display:flex; flex-wrap:wrap; gap:.5rem 1.4rem; align-items:center;
+      }
+      footer .fbrand{ display:flex; align-items:center; gap:.5rem; font-weight:800; color:var(--ink); }
+      .toast{
+        position:fixed; left:50%; bottom:1.2rem; transform:translate(-50%,140%); z-index:60;
+        background:var(--blue); color:#fff; border-radius:12px; padding:.8rem 1.1rem; font-weight:700;
+        box-shadow:var(--shadow); transition:transform .3s ease; max-width:min(92vw,480px); text-align:center;
+      }
+      .toast.show{ transform:translate(-50%,0); }
+      @media (prefers-reduced-motion: reduce){
+        html{ scroll-behavior:auto; }
+        .toast{ transition:none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-in">
+        <a class="brand" href="#" id="brandHome" aria-label="MKMANAGEMENT home">
+          <svg width="34" height="24" viewBox="0 0 34 24" aria-hidden="true"><defs><linearGradient id="wg1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6D5DF6"/><stop offset=".52" stop-color="#B565D8"/><stop offset="1" stop-color="#DF73FF"/></linearGradient></defs><path d="M1 7 Q6 1 11 7 T21 7 T31 7" fill="none" stroke="url(#wg1)" stroke-width="3" stroke-linecap="round"/><path d="M1 15 Q6 9 11 15 T21 15 T31 15" fill="none" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity=".9"/></svg>
+          <span><span class="brand-name">MK<span>MANAGEMENT</span></span><span class="brand-sub">Middleton Solutions</span></span>
+        </a>
+        <nav class="tabs" role="tablist" aria-label="Site sections">
+          <button class="tab" role="tab" id="tab-book" aria-selected="true" data-view="book">Book a service</button>
+          <button class="tab" role="tab" id="tab-bookings" aria-selected="false" data-view="bookings">My Bookings <span class="count" id="bookingCount">0</span></button>
+          <button class="tab" role="tab" id="tab-apex" aria-selected="false" data-view="apex">APEX Rewards</button>
+        </nav>
+        <span class="apex-pill" title="Your APEX balance">
+          <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z" fill="#FFD700"/></svg>
+          <span id="apexPillBalance">0</span>&nbsp;APEX
+        </span>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <!-- ============ BOOK VIEW ============ -->
+      <section class="view active" id="view-book">
+        <div class="hero">
+          <div class="hero-in">
+            <h1>Book the call.<br /><span class="grad">The call creates the estimate.</span></h1>
+            <p>Pick a service and MKMANAGEMENT matches you with a vetted local pro and a live, itemized quote — no phone tag, no waiting on callbacks. Book it, pay the service call, and the pro's visit produces your estimate for the full job.</p>
+            <div class="loop-strip" aria-label="How the loop works">
+              <span class="step-chip">1 · Book the service call</span><span class="arrow">→</span>
+              <span class="step-chip">2 · Pro performs the call</span><span class="arrow">→</span>
+              <span class="step-chip">3 · Estimate issued</span><span class="arrow">→</span>
+              <span class="step-chip">4 · Accept &amp; pledge the asset</span><span class="arrow">→</span>
+              <span class="step-chip">5 · Pay for the job</span>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat"><b>9</b><span>Service lines</span></div>
+              <div class="hero-stat"><b>$99+</b><span>Service calls from</span></div>
+              <div class="hero-stat"><b>1 APEX⭐</b><span>Per $100 spent</span></div>
+              <div class="hero-stat"><b>Nationwide</b><span>Pro network</span></div>
+            </div>
+          </div>
+          <svg class="hero-wave" width="100%" height="46" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 26 Q75 4 150 26 T300 26 T450 26 T600 26 T750 26 T900 26 T1050 26 T1200 26 V46 H0 Z" fill="#021C2E" opacity=".55"/></svg>
+        </div>
+
+        <div class="card wizard" id="wizard">
+          <div class="wiz-steps" id="wizSteps">
+            <div class="wiz-step on" data-step="1"><span class="n">1</span> Pick a service</div>
+            <div class="wiz-step" data-step="2"><span class="n">2</span> Property &amp; timing</div>
+            <div class="wiz-step" data-step="3"><span class="n">3</span> Match &amp; quote</div>
+            <div class="wiz-step" data-step="4"><span class="n">4</span> Book &amp; pay</div>
+          </div>
+
+          <!-- Panel 1: service -->
+          <div class="panel on" id="panel-1">
+            <h2>What does the property need?</h2>
+            <p class="lede">Nine service lines, one flat service-call rate each. The call gets a pro on site to scope the work — and that call is what creates your estimate.</p>
+            <div class="svc-grid" id="svcGrid"></div>
+            <div class="form-error" id="err1" role="alert"></div>
+            <div class="wiz-nav">
+              <button class="btn primary" id="toStep2">Continue →</button>
+            </div>
+          </div>
+
+          <!-- Panel 2: details -->
+          <div class="panel" id="panel-2">
+            <h2>Property &amp; timing</h2>
+            <p class="lede">Where the pro is going, when, and how fast you need them. Urgency and dispatch adjust the quote live in the next step.</p>
+            <div class="form-grid">
+              <div class="field"><label for="fName">Owner / contact name</label><input id="fName" type="text" autocomplete="name" placeholder="e.g. Korey Middleton" /></div>
+              <div class="field"><label for="fAddress">Property address</label><input id="fAddress" type="text" autocomplete="street-address" placeholder="e.g. 3043 Bethune Ave, Macon, GA" /></div>
+              <div class="field"><label for="fDate">Preferred date</label><input id="fDate" type="date" /></div>
+              <div class="field"><label for="fWindow">Arrival window</label>
+                <select id="fWindow">
+                  <option value="8 AM – 11 AM">8 AM – 11 AM</option>
+                  <option value="9 AM – 12 PM" selected>9 AM – 12 PM</option>
+                  <option value="12 PM – 3 PM">12 PM – 3 PM</option>
+                  <option value="3 PM – 6 PM">3 PM – 6 PM</option>
+                </select>
+              </div>
+            </div>
+            <div class="group-label">Urgency</div>
+            <div class="choice-row" id="urgencyRow">
+              <button type="button" class="choice sel" data-urgency="standard"><b>Standard</b><span>Base rate · first available slot in your window</span></button>
+              <button type="button" class="choice" data-urgency="priority"><b>Priority · +25%</b><span>Jump the queue · same-day preference</span></button>
+              <button type="button" class="choice" data-urgency="emergency"><b>Emergency · +50%</b><span>Active leak, no power, no heat — pro rolls now</span></button>
+            </div>
+            <div class="group-label">Dispatch</div>
+            <div class="choice-row" id="dispatchRow">
+              <button type="button" class="choice" data-dispatch="next"><b>Next available</b><span>Included · we take the first open pro</span></button>
+              <button type="button" class="choice sel" data-dispatch="scheduled"><b>Scheduled window</b><span>Included · the date and window you picked</span></button>
+              <button type="button" class="choice" data-dispatch="priority"><b>Priority dispatch · +$49</b><span>Dedicated dispatcher, tightest arrival window</span></button>
+            </div>
+            <div class="field" style="margin-top:1rem;">
+              <label for="fDesc">Describe the job</label>
+              <textarea id="fDesc" placeholder="What is happening at the property? Anything the pro should bring or know?"></textarea>
+            </div>
+            <div class="form-error" id="err2" role="alert"></div>
+            <div class="wiz-nav">
+              <button class="btn" data-back="1">← Back</button>
+              <button class="btn primary" id="toStep3">See my match &amp; quote →</button>
+            </div>
+          </div>
+
+          <!-- Panel 3: match & quote -->
+          <div class="panel" id="panel-3">
+            <h2>Your match &amp; live quote</h2>
+            <p class="lede">Matched against the MKMANAGEMENT pro network for your property's area. Change urgency or dispatch on the previous step and this quote updates instantly.</p>
+            <div class="match-grid">
+              <div class="card pro-card" id="proCard"></div>
+              <div class="card quote" id="quoteCard"></div>
+            </div>
+            <div class="note-box"><b>The service call creates the estimate.</b> This payment covers the pro's on-site service call. After the pro performs the call, your itemized estimate for the full job is issued in My Bookings — accept it to forward the job to completion, then pledge the asset and pay for the job.</div>
+            <div class="wiz-nav">
+              <button class="btn" data-back="2">← Back</button>
+              <button class="btn primary" id="toStep4">Book this call →</button>
+            </div>
+          </div>
+
+          <!-- Panel 4: pay -->
+          <div class="panel" id="panel-4">
+            <h2>Book &amp; pay the service call</h2>
+            <p class="lede">Payment is for the service call only — the full job is estimated after the call and paid separately, once you accept the estimate and pledge the asset.</p>
+            <div class="match-grid">
+              <div>
+                <div class="form-grid" style="grid-template-columns:1fr;">
+                  <div class="field"><label for="cName">Name on card</label><input id="cName" type="text" autocomplete="cc-name" placeholder="Name as it appears on the card" /></div>
+                  <div class="field"><label for="cNum">Card number</label><input id="cNum" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="4242 4242 4242 4242" /><div class="hint">Demonstration checkout — the test card 4242 4242 4242 4242 works with any future date and CVC.</div></div>
+                </div>
+                <div class="form-grid" style="margin-top:1rem;">
+                  <div class="field"><label for="cExp">Expiry</label><input id="cExp" type="text" inputmode="numeric" placeholder="MM / YY" /></div>
+                  <div class="field"><label for="cCvc">CVC</label><input id="cCvc" type="text" inputmode="numeric" placeholder="123" /></div>
+                </div>
+                <div id="apexApplyBox"></div>
+                <div class="form-error" id="err4" role="alert"></div>
+                <div class="wiz-nav">
+                  <button class="btn" data-back="3">← Back</button>
+                  <button class="btn gold" id="payBtn">Pay &amp; book</button>
+                </div>
+              </div>
+              <div class="card quote" id="paySummary"></div>
+            </div>
+          </div>
+
+          <!-- Panel 5: success -->
+          <div class="panel" id="panel-5">
+            <div class="success-head">
+              <div class="success-badge"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div>
+                <h2 style="margin:0;">Service call booked</h2>
+                <p style="margin:.2rem 0 0;color:var(--muted);">Reference <span class="ref-chip" id="successRef">MK-000000</span></p>
+              </div>
+            </div>
+            <div id="successDetail"></div>
+            <ol class="next-steps">
+              <li><span class="dot">1</span><span><b>Pro dispatched.</b> Your matched pro is notified and confirmed for your window — follow it live in My Bookings.</span></li>
+              <li><span class="dot">2</span><span><b>The call creates the estimate.</b> After the pro performs the service call, your itemized estimate for the full job appears on the booking.</span></li>
+              <li><span class="dot">3</span><span><b>Accept, pledge, pay.</b> Accept the estimate to forward the job to completion, pledge the asset, then pay for the job.</span></li>
+            </ol>
+            <div class="wiz-nav">
+              <button class="btn primary" id="goBookings">Track it in My Bookings →</button>
+              <button class="btn" id="bookAnother">Book another service</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- How the loop works -->
+        <div class="section-head">
+          <h2>How the loop works</h2>
+          <p>One motion from problem to paid job — the owner never has to chase a contractor, and the estimate always comes from a real on-site call, never a guess over the phone.</p>
+        </div>
+        <div class="flow-steps">
+          <div class="card flow-step"><div class="fn">01</div><b>Book the service call</b><p>Pick the service line, set urgency and dispatch, pay the flat call rate. The call is what creates the estimate.</p></div>
+          <div class="card flow-step"><div class="fn">02</div><b>Pro performs the call</b><p>A matched, vetted pro arrives in your window, diagnoses on site, and scopes the full job first-hand.</p></div>
+          <div class="card flow-step"><div class="fn">03</div><b>Estimate issued</b><p>The itemized estimate lands on your booking. Review every line before you commit to anything.</p></div>
+          <div class="card flow-step"><div class="fn">04</div><b>Accept &amp; pledge</b><p>Accept the estimate to forward the job to completion, and pledge the property asset against it.</p></div>
+          <div class="card flow-step"><div class="fn">05</div><b>Pay for the job</b><p>Pay the accepted estimate, earn APEX⭐ on every $100, and the completion work is scheduled.</p></div>
+        </div>
+
+        <div class="card est-example">
+          <div class="est-head">
+            <div>
+              <h3>Square Estimate #100123</h3>
+              <div class="addr">Electrical rewire · 3043 Bethune Ave, Macon, GA</div>
+            </div>
+            <span class="status-pill st-progress">Issued by the $189 service call</span>
+          </div>
+          <div style="margin-top:.6rem;">
+            <div class="q-line"><span>Full-home rewire</span><b>$6,850</b></div>
+            <div class="q-line"><span>Demolition &amp; prep</span><b>$940</b></div>
+            <div class="q-line"><span>Grounding system upgrade</span><b>$780</b></div>
+            <div class="q-line"><span>Permits &amp; inspection</span><b>$790</b></div>
+            <div class="q-total"><span>Estimate total</span><b>$9,360</b></div>
+          </div>
+          <div class="note-box" style="margin-top:.9rem;">This is the estimate the service call creates. The owner received it after the electrician performed the call — from here it carries one path: <b>accept it to forward the job to completion, pledge the asset, and pay for the job.</b> Find it live on the electrical booking in My Bookings and run it through.</div>
+        </div>
+      </section>
+
+      <!-- ============ BOOKINGS VIEW ============ -->
+      <section class="view" id="view-bookings">
+        <div class="section-head" style="margin-top:1.6rem;">
+          <h2>My Bookings</h2>
+          <p>Every service call, tracked from booked to completed — and, once the call is done, the estimate it created, ready to accept, pledge, and pay. Bookings are kept in this browser.</p>
+        </div>
+        <div id="bookingList"></div>
+      </section>
+
+      <!-- ============ APEX VIEW ============ -->
+      <section class="view" id="view-apex">
+        <div class="section-head" style="margin-top:1.6rem;">
+          <h2>APEX Rewards</h2>
+          <p>One rewards balance across MKMANAGEMENT — the same APEX⭐ you earn here are LuxePoints in LuxeVault. Earn <b>1 APEX⭐ for every $100 spent</b>, on service calls and on completed jobs alike.</p>
+        </div>
+        <div class="card apex-hero">
+          <div class="apex-balance"><span>Current balance</span><b><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z" fill="#FFD700"/></svg><span id="apexBalanceBig">0</span></b></div>
+          <p id="apexHeroText">Book a service call to start earning. Every $100 through the loop — calls and jobs — adds a star.</p>
+        </div>
+        <div class="tier-grid">
+          <div class="card tier">
+            <div class="cost">2 APEX⭐</div>
+            <h3>10% off an entire sale</h3>
+            <p>Apply two stars at checkout for 10% off the whole service-call total.</p>
+            <div class="bar"><i id="bar-tier2" style="width:0%"></i></div>
+            <div class="bar-label" id="label-tier2"></div>
+          </div>
+          <div class="card tier">
+            <div class="cost">5 APEX⭐</div>
+            <h3>Free Consultation</h3>
+            <p>A full portfolio consultation with the Middleton Solutions team — on us.</p>
+            <div class="bar"><i id="bar-tier5" style="width:0%"></i></div>
+            <div class="bar-label" id="label-tier5"></div>
+            <div class="booking-actions"><button class="btn small gold" id="redeemConsult" disabled>Redeem 5 APEX⭐</button></div>
+          </div>
+          <div class="card tier">
+            <div class="cost">50 APEX⭐</div>
+            <h3>Free APEX-MS-004</h3>
+            <p>The top tier: redeem fifty stars for a free APEX-MS-004 through the Mastercard rewards program.</p>
+            <div class="bar"><i id="bar-tier50" style="width:0%"></i></div>
+            <div class="bar-label" id="label-tier50"></div>
+            <div class="booking-actions"><button class="btn small gold" id="redeemMs004" disabled>Redeem 50 APEX⭐</button></div>
+          </div>
+        </div>
+        <div class="card history">
+          <h3>Rewards activity</h3>
+          <ul id="apexHistory"></ul>
+        </div>
+      </section>
+
+      <footer>
+        <span class="fbrand">
+          <svg width="26" height="18" viewBox="0 0 34 24" aria-hidden="true"><path d="M1 7 Q6 1 11 7 T21 7 T31 7" fill="none" stroke="#B565D8" stroke-width="3" stroke-linecap="round"/><path d="M1 15 Q6 9 11 15 T21 15 T31 15" fill="none" stroke="#3E8E41" stroke-width="3" stroke-linecap="round"/></svg>
+          MKMANAGEMENT
+        </span>
+        <span>Middleton Solutions · Property management, booked end to end</span>
+        <span>otfz.store</span>
+        <span>ASAASIN books &amp; delivers · MAP™ accounts, settles, pays</span>
+      </footer>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+    (function(){
+      "use strict";
+      var $ = function(id){ return document.getElementById(id); };
+      var esc = function(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); };
+      var money = function(n){ return "$" + Number(n).toLocaleString("en-US"); };
+
+      /* ---------------- Catalog ---------------- */
+      var ICONS = {
+        bolt:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4.5 13.5H11L9.8 22 19 10h-6.5z" fill="currentColor"/></svg>',
+        drop:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3.5 4.2 6.5 7.8 6.5 11.2A6.5 6.5 0 1 1 5.5 14.2C5.5 10.8 8.5 7.2 12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+        fan:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M12 9.8c0-3 .8-5.3 2.6-5.3 1.6 0 2.3 1.8 1.2 3.4-1 1.5-2.5 1.9-3.8 1.9zM14 13.4c2.9.8 4.8 2.2 4.2 3.9-.5 1.5-2.5 1.7-4 .4-1.3-1.2-1.4-2.8-1.2-4.3zM10.2 13.6c-2.6 1.5-5 1.7-5.9.2-.8-1.4.5-3 2.3-3.2 1.7-.2 3 .9 3.6 2z" fill="currentColor" opacity=".85"/></svg>',
+        building:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16M14 9h5a1 1 0 0 1 1 1v11M2.5 21h19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7.5 8h3M7.5 12h3M7.5 16h3M17 13.5h.5M17 17h.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+        hammer:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4.5l5 5M11 8l5.5 5.5-2.8 2.8a2.3 2.3 0 0 1-3.2 0L8 13.8a2.3 2.3 0 0 1 0-3.2zM8 13.5L3 21.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        up:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 19.5l6-6 3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 8.5h5.5V14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        leaf:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20c0-9 5-14 14-14 0 9-5 14-14 14zM5 20c2-5 5.5-8.5 10-10.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        wrench:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4.5 4.5 0 0 1 5.9-4.2L17.5 5.2l1.3 3.3 3.3-3.1a4.5 4.5 0 0 1-5.7 5.5L8 19.3a2.12 2.12 0 0 1-3-3l8.4-8.4a4.5 4.5 0 0 0 1.3-1.6z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" transform="scale(.92) translate(1,1)"/></svg>',
+        scale:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 6.8v10.4M15 8.6c-.6-.8-1.7-1.2-3-1.2-1.8 0-3 .9-3 2.1 0 2.9 6 1.6 6 4 0 1.2-1.3 2.1-3 2.1-1.4 0-2.6-.5-3.2-1.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'
+      };
+      var SERVICES = [
+        { key:"electrical",  name:"Electrical",   rate:189, icon:"bolt",     blurb:"Panel work, wiring, lighting, EV circuits — licensed electricians." },
+        { key:"plumbing",    name:"Plumbing",     rate:179, icon:"drop",     blurb:"Leaks, lines, water heaters and fixtures, scoped on site." },
+        { key:"hvac",        name:"HVAC",         rate:199, icon:"fan",      blurb:"Heating and cooling diagnostics, repair and replacement." },
+        { key:"building",    name:"Building",     rate:349, icon:"building", blurb:"Structural work, additions and code-driven construction." },
+        { key:"remodeling",  name:"Remodeling",   rate:399, icon:"hammer",   blurb:"Kitchens, baths and full-unit turns, planned from one call." },
+        { key:"valueadd",    name:"Value Add",    rate:299, icon:"up",       blurb:"Upgrades that raise rent and appraisal — EV charging, amenities, finishes." },
+        { key:"retrofit",    name:"Retrofit",     rate:329, icon:"leaf",     blurb:"Energy and systems retrofits: insulation, controls, efficiency." },
+        { key:"maintenance", name:"Maintenance",  rate:129, icon:"wrench",   blurb:"Preventive and on-demand upkeep across the whole property." },
+        { key:"collections", name:"Collections",  rate:99,  icon:"scale",    blurb:"Ledger review, recovery workflow and documentation support." }
+      ];
+      var svcByKey = {}; SERVICES.forEach(function(s){ svcByKey[s.key]=s; });
+
+      var PROS = {
+        electrical:{ name:"Dana Whitfield", trade:"Licensed Master Electrician", rating:"4.9", jobs:312 },
+        plumbing:{ name:"Marcus Bell", trade:"Licensed Journeyman Plumber", rating:"4.8", jobs:428 },
+        hvac:{ name:"Priya Nair", trade:"EPA-Certified HVAC Technician", rating:"4.9", jobs:365 },
+        building:{ name:"Tom Okafor", trade:"Licensed General Contractor", rating:"4.8", jobs:190 },
+        remodeling:{ name:"Sofia Reyes", trade:"Remodeling Contractor, Licensed", rating:"5.0", jobs:154 },
+        valueadd:{ name:"James Calloway", trade:"Value-Add Project Specialist", rating:"4.9", jobs:211 },
+        retrofit:{ name:"Elena Brooks", trade:"Energy Retrofit Specialist", rating:"4.8", jobs:176 },
+        maintenance:{ name:"Andre Foster", trade:"Maintenance Lead Technician", rating:"4.9", jobs:640 },
+        collections:{ name:"Rachel Kim", trade:"Collections & Ledger Specialist", rating:"4.8", jobs:289 }
+      };
+
+      var ESTIMATES = {
+        electrical:[["Full-home rewire",6850],["Demolition & prep",940],["Grounding system upgrade",780],["Permits & inspection",790]],
+        plumbing:[["Repipe — affected section",1450],["Water heater replacement",1180],["Fixtures & trim-out",420],["Permits & inspection",150]],
+        hvac:[["3-ton condenser unit",2850],["Air handler",1640],["Duct sealing & balancing",520],["Smart thermostat & controls",210]],
+        building:[["Framing & structural work",7400],["Concrete & footing work",2100],["Roof tie-in",1850],["Permits & inspection",650]],
+        remodeling:[["Cabinetry & counters",6900],["Tile & flooring",3400],["Plumbing & electrical rough-in",2600],["Finishes & paint",1500]],
+        valueadd:[["EV charging station — equipment",2400],["Electrical run & panel capacity",1350],["Mounting, bollards & signage",450],["Permits & inspection",650]],
+        retrofit:[["Insulation upgrade",2300],["Smart controls & sensors",1150],["LED lighting conversion",980],["Air sealing & verification",620]],
+        maintenance:[["Preventive service — full property",640],["Repairs identified on site",380],["Filters, seals & consumables",140]],
+        collections:[["Ledger audit & reconciliation",450],["Recovery workflow setup",300],["Documentation & notices",150]]
+      };
+
+      var URGENCY = { standard:{label:"Standard", mult:1}, priority:{label:"Priority", mult:1.25}, emergency:{label:"Emergency", mult:1.5} };
+      var DISPATCH = { next:{label:"Next available", fee:0}, scheduled:{label:"Scheduled window", fee:0}, priority:{label:"Priority dispatch", fee:49} };
+      var STATUSES = ["Booked","Pro dispatched","On site","Completed"];
+
+      /* ---------------- State ---------------- */
+      var LS_KEY = "mkmanagement_state_v1";
+      function seedState(){
+        return {
+          estSeq: 100132,
+          redemptions: [],
+          activity: [
+            { text:"APEX⭐ earned — Value Add service call MK-RQUNKZ", delta:2 },
+            { text:"APEX⭐ earned — Electrical service call MK-JGY7U7", delta:1 }
+          ],
+          bookings: [
+            {
+              ref:"MK-RQUNKZ", service:"valueadd", name:"Korey Middleton",
+              address:"3043 Bethune Ave, Macon, GA", date:"2026-11-20", win:"9 AM – 12 PM",
+              urgency:"standard", dispatch:"scheduled",
+              desc:"EV charging station install.",
+              base:299, callCharge:299, dispatchFee:0, discount:0, apexSpent:0, total:299, stars:2,
+              cardBrand:"Visa", cardLast4:"4242", statusIdx:3, cancelled:false,
+              pro: PROS.valueadd,
+              estimate:{ number:100131, total:4850, status:"issued",
+                items:[["EV charging station — equipment",2400],["Electrical run & panel capacity",1350],["Mounting, bollards & signage",450],["Permits & inspection",650]] }
+            },
+            {
+              ref:"MK-JGY7U7", service:"electrical", name:"M K MANAGEMENT",
+              address:"3043 Bethune Ave, Macon, GA", date:"2026-11-21", win:"9 AM – 12 PM",
+              urgency:"standard", dispatch:"scheduled",
+              desc:"Electrical service call. This call created Square Estimate #100123 — full-home rewire at 3043 Bethune Ave, $9,360.",
+              base:189, callCharge:189, dispatchFee:0, discount:0, apexSpent:0, total:189, stars:1,
+              cardBrand:"Visa", cardLast4:"4242", statusIdx:3, cancelled:false,
+              pro: PROS.electrical,
+              estimate:{ number:100123, total:9360, status:"issued",
+                items:[["Full-home rewire",6850],["Demolition & prep",940],["Grounding system upgrade",780],["Permits & inspection",790]] }
+            }
+          ]
+        };
+      }
+      function loadState(){
+        try {
+          var raw = localStorage.getItem(LS_KEY);
+          if (raw) { var s = JSON.parse(raw); if (s && s.bookings) return s; }
+        } catch(e){}
+        var s = seedState(); saveState(s); return s;
+      }
+      function saveState(s){ try { localStorage.setItem(LS_KEY, JSON.stringify(s||state)); } catch(e){} }
+      var state = loadState();
+
+      function apexBalance(){
+        var bal = 0;
+        state.bookings.forEach(function(b){
+          if (b.cancelled) return;
+          bal += b.stars - (b.apexSpent||0);
+          if (b.estimate && b.estimate.status === "paid") bal += Math.floor(b.estimate.total/100);
+        });
+        state.redemptions.forEach(function(r){ bal -= r.stars; });
+        return bal;
+      }
+
+      /* ---------------- Toast ---------------- */
+      var toastTimer = null;
+      function toast(msg){
+        var t = $("toast"); t.textContent = msg; t.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 3400);
+      }
+
+      /* ---------------- Views ---------------- */
+      function showView(name){
+        ["book","bookings","apex"].forEach(function(v){
+          $("view-"+v).classList.toggle("active", v===name);
+          $("tab-"+v).setAttribute("aria-selected", v===name ? "true" : "false");
+        });
+        if (name === "bookings") renderBookings();
+        if (name === "apex") renderApex();
+        window.scrollTo({ top:0, behavior:"smooth" });
+      }
+      document.querySelectorAll(".tab").forEach(function(tab){
+        tab.addEventListener("click", function(){ showView(tab.getAttribute("data-view")); });
+      });
+      $("brandHome").addEventListener("click", function(e){ e.preventDefault(); showView("book"); });
+
+      /* ---------------- Wizard ---------------- */
+      var sel = { service:null, urgency:"standard", dispatch:"scheduled", useApex:false };
+      var step = 1;
+
+      function renderServices(){
+        $("svcGrid").innerHTML = SERVICES.map(function(s){
+          return '<button type="button" class="svc'+(sel.service===s.key?" sel":"")+'" data-svc="'+s.key+'" aria-pressed="'+(sel.service===s.key)+'">'
+            + '<span class="ic">'+ICONS[s.icon]+'</span>'
+            + '<b>'+s.name+'</b>'
+            + '<span class="blurb">'+s.blurb+'</span>'
+            + '<span class="rate">'+money(s.rate)+' <small>service call</small></span>'
+            + '</button>';
+        }).join("");
+        document.querySelectorAll("[data-svc]").forEach(function(btn){
+          btn.addEventListener("click", function(){
+            sel.service = btn.getAttribute("data-svc");
+            $("err1").textContent = "";
+            renderServices();
+          });
+        });
+      }
+
+      function goStep(n){
+        step = n;
+        [1,2,3,4,5].forEach(function(i){
+          $("panel-"+i).classList.toggle("on", i===n);
+        });
+        document.querySelectorAll(".wiz-step").forEach(function(el){
+          var s = Number(el.getAttribute("data-step"));
+          el.classList.toggle("on", s===Math.min(n,4));
+          el.classList.toggle("done", s<Math.min(n,4) || n===5);
+          el.querySelector(".n").innerHTML = (s<Math.min(n,4) || n===5) ? "✓" : s;
+        });
+        if (n===3 || n===4) renderQuote();
+        $("wizard").scrollIntoView({ behavior:"smooth", block:"start" });
+      }
+      document.querySelectorAll("[data-back]").forEach(function(btn){
+        btn.addEventListener("click", function(){ goStep(Number(btn.getAttribute("data-back"))); });
+      });
+
+      $("toStep2").addEventListener("click", function(){
+        if (!sel.service) { $("err1").textContent = "Pick a service line to continue."; return; }
+        goStep(2);
+      });
+
+      document.querySelectorAll("[data-urgency]").forEach(function(btn){
+        btn.addEventListener("click", function(){
+          sel.urgency = btn.getAttribute("data-urgency");
+          document.querySelectorAll("[data-urgency]").forEach(function(b){ b.classList.toggle("sel", b===btn); });
+        });
+      });
+      document.querySelectorAll("[data-dispatch]").forEach(function(btn){
+        btn.addEventListener("click", function(){
+          sel.dispatch = btn.getAttribute("data-dispatch");
+          document.querySelectorAll("[data-dispatch]").forEach(function(b){ b.classList.toggle("sel", b===btn); });
+        });
+      });
+
+      $("toStep3").addEventListener("click", function(){
+        var name = $("fName").value.trim(), addr = $("fAddress").value.trim(), date = $("fDate").value;
+        if (!name) { $("err2").textContent = "Add the owner or contact name."; return; }
+        if (!addr) { $("err2").textContent = "Add the property address so the pro can be dispatched."; return; }
+        if (!date) { $("err2").textContent = "Pick a preferred date."; return; }
+        $("err2").textContent = "";
+        goStep(3);
+      });
+      $("toStep4").addEventListener("click", function(){ goStep(4); });
+
+      function computeQuote(){
+        var svc = svcByKey[sel.service];
+        var callCharge = Math.round(svc.rate * URGENCY[sel.urgency].mult);
+        var dispatchFee = DISPATCH[sel.dispatch].fee;
+        var subtotal = callCharge + dispatchFee;
+        var discount = sel.useApex ? Math.round(subtotal * 0.10) : 0;
+        var total = subtotal - discount;
+        return { svc:svc, callCharge:callCharge, dispatchFee:dispatchFee, subtotal:subtotal,
+                 discount:discount, total:total, stars: Math.floor(total/100) };
+      }
+
+      function quoteHTML(q, showStars){
+        var h = '<h3>Itemized quote — service call</h3>';
+        h += '<div class="q-line"><span>'+esc(q.svc.name)+' service call'+(sel.urgency!=="standard" ? ' · '+URGENCY[sel.urgency].label+' urgency ('+money(q.svc.rate)+' × '+URGENCY[sel.urgency].mult+')' : '')+'</span><b>'+money(q.callCharge)+'</b></div>';
+        h += '<div class="q-line"><span>Dispatch — '+DISPATCH[sel.dispatch].label+'</span><b>'+(q.dispatchFee ? money(q.dispatchFee) : "Included")+'</b></div>';
+        if (q.discount) h += '<div class="q-line discount"><span>APEX⭐ discount — 10% off (2 stars)</span><b>−'+money(q.discount)+'</b></div>';
+        h += '<div class="q-total"><span>Total due today</span><b>'+money(q.total)+'</b></div>';
+        if (showStars) h += '<div class="q-stars"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z" fill="#C99700"/></svg> You earn '+q.stars+' APEX⭐ on this call</div>';
+        h += '<p style="margin:.7rem 0 0;font-size:.85rem;color:var(--muted);">Covers the on-site service call only. The full job is priced by the estimate this call creates.</p>';
+        return h;
+      }
+
+      function renderQuote(){
+        if (!sel.service) return;
+        var q = computeQuote();
+        var pro = PROS[sel.service];
+        var initials = pro.name.split(" ").map(function(w){ return w[0]; }).join("");
+        $("proCard").innerHTML =
+          '<span class="matched-tag">✓ Matched for '+esc($("fAddress").value.trim() || "your property")+'</span>'
+          + '<div class="pro-head" style="margin-top:.9rem;"><span class="avatar">'+initials+'</span>'
+          + '<div><b>'+esc(pro.name)+'</b><span>'+esc(pro.trade)+'</span></div></div>'
+          + '<div class="pro-meta">'
+          + '<div><b>★ '+pro.rating+'</b><span>Rating</span></div>'
+          + '<div><b>'+pro.jobs+'</b><span>Jobs done</span></div>'
+          + '<div><b>'+esc($("fWindow").value)+'</b><span>Arrival window</span></div>'
+          + '<div><b>'+DISPATCH[sel.dispatch].label+'</b><span>Dispatch</span></div>'
+          + '</div>'
+          + '<p style="margin:.9rem 0 0;color:var(--muted);font-size:.9rem;">Licensed, insured, and background-checked through the MKMANAGEMENT network. You will see live status — dispatched, on site, completed — in My Bookings.</p>';
+        $("quoteCard").innerHTML = quoteHTML(q, true);
+        $("paySummary").innerHTML = quoteHTML(q, true);
+        var bal = apexBalance();
+        if (bal >= 2) {
+          $("apexApplyBox").innerHTML =
+            '<div class="apex-apply"><div><b>⭐ Use 2 APEX⭐ — 10% off this call</b>'
+            + '<p>Your balance is '+bal+' APEX⭐. The 2-star tier takes 10% off the entire service-call total.</p></div>'
+            + '<span class="switch"><button type="button" id="apexToggle" class="'+(sel.useApex?"applied":"")+'">'+(sel.useApex?"Applied ✓":"Apply")+'</button></span></div>';
+          $("apexToggle").addEventListener("click", function(){
+            sel.useApex = !sel.useApex;
+            renderQuote();
+          });
+        } else {
+          sel.useApex = false;
+          $("apexApplyBox").innerHTML = "";
+        }
+      }
+
+      /* Card input formatting */
+      $("cNum").addEventListener("input", function(){
+        var v = this.value.replace(/\D/g,"").slice(0,16);
+        this.value = v.replace(/(\d{4})(?=\d)/g,"$1 ");
+      });
+      $("cExp").addEventListener("input", function(){
+        var v = this.value.replace(/\D/g,"").slice(0,4);
+        this.value = v.length > 2 ? v.slice(0,2)+" / "+v.slice(2) : v;
+      });
+      $("cCvc").addEventListener("input", function(){ this.value = this.value.replace(/\D/g,"").slice(0,4); });
+
+      function makeRef(){
+        var chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789", r = "";
+        for (var i=0;i<6;i++) r += chars[Math.floor(Math.random()*chars.length)];
+        return "MK-" + r;
+      }
+
+      $("payBtn").addEventListener("click", function(){
+        var cname = $("cName").value.trim();
+        var num = $("cNum").value.replace(/\D/g,"");
+        var exp = $("cExp").value.replace(/\D/g,"");
+        var cvc = $("cCvc").value.replace(/\D/g,"");
+        if (!cname) { $("err4").textContent = "Add the name on the card."; return; }
+        if (num.length < 15) { $("err4").textContent = "Enter the full card number — the test card 4242 4242 4242 4242 works."; return; }
+        if (exp.length < 4) { $("err4").textContent = "Enter the card expiry (MM / YY)."; return; }
+        var mm = Number(exp.slice(0,2)), yy = 2000 + Number(exp.slice(2,4));
+        var now = new Date();
+        if (mm < 1 || mm > 12 || yy < now.getFullYear() || (yy === now.getFullYear() && mm < now.getMonth()+1)) {
+          $("err4").textContent = "That expiry date is in the past."; return;
+        }
+        if (cvc.length < 3) { $("err4").textContent = "Enter the 3-digit CVC."; return; }
+        $("err4").textContent = "";
+
+        var q = computeQuote();
+        var brand = num[0]==="4" ? "Visa" : num[0]==="5" ? "Mastercard" : num[0]==="3" ? "Amex" : "Card";
+        var booking = {
+          ref: makeRef(), service: sel.service,
+          name: $("fName").value.trim(), address: $("fAddress").value.trim(),
+          date: $("fDate").value, win: $("fWindow").value,
+          urgency: sel.urgency, dispatch: sel.dispatch,
+          desc: $("fDesc").value.trim(),
+          base: q.svc.rate, callCharge: q.callCharge, dispatchFee: q.dispatchFee,
+          discount: q.discount, apexSpent: sel.useApex ? 2 : 0,
+          total: q.total, stars: q.stars,
+          cardBrand: brand, cardLast4: num.slice(-4),
+          statusIdx: 0, cancelled: false, pro: PROS[sel.service], estimate: null
+        };
+        state.bookings.unshift(booking);
+        state.activity.unshift({ text:"APEX⭐ earned — "+q.svc.name+" service call "+booking.ref, delta:q.stars });
+        if (booking.apexSpent) state.activity.unshift({ text:"APEX⭐ redeemed — 10% off "+booking.ref, delta:-2 });
+        saveState();
+        syncChrome();
+
+        $("successRef").textContent = booking.ref;
+        $("successDetail").innerHTML =
+          '<div class="booking-grid">'
+          + '<div><span>Service</span><b>'+esc(q.svc.name)+' service call</b></div>'
+          + '<div><span>Pro</span><b>'+esc(booking.pro.name)+'</b></div>'
+          + '<div><span>When</span><b>'+esc(booking.date)+' · '+esc(booking.win)+'</b></div>'
+          + '<div><span>Property</span><b>'+esc(booking.address)+'</b></div>'
+          + '<div><span>Paid</span><b>'+money(booking.total)+' · '+esc(brand)+' ··'+esc(booking.cardLast4)+'</b></div>'
+          + '<div><span>APEX earned</span><b>'+booking.stars+' APEX⭐</b></div>'
+          + '</div>';
+        sel.useApex = false;
+        goStep(5);
+        toast("Booked — "+booking.ref+" · "+money(booking.total)+" paid");
+      });
+
+      $("goBookings").addEventListener("click", function(){ showView("bookings"); });
+      $("bookAnother").addEventListener("click", function(){
+        sel.service = null; sel.useApex = false;
+        $("fDesc").value = "";
+        renderServices();
+        goStep(1);
+      });
+
+      /* ---------------- Bookings ---------------- */
+      function statusPill(b){
+        if (b.cancelled) return '<span class="status-pill st-cancelled">Cancelled · refunded</span>';
+        if (b.statusIdx === 0) return '<span class="status-pill st-booked">Booked</span>';
+        if (b.statusIdx === 3) return '<span class="status-pill st-done">Call completed</span>';
+        return '<span class="status-pill st-progress">'+STATUSES[b.statusIdx]+'</span>';
+      }
+      function trackerHTML(b){
+        var h = '<div class="tracker" aria-label="Booking progress">';
+        STATUSES.forEach(function(s, i){
+          h += '<div class="t-step'+(i <= b.statusIdx && !b.cancelled ? " hit":"")+'">'+s+'</div>';
+        });
+        return h + '</div>';
+      }
+      function fmtDate(iso){
+        if (!iso) return "";
+        var d = new Date(iso + "T12:00:00");
+        return isNaN(d) ? iso : d.toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric", year:"numeric" });
+      }
+      function estimateHTML(b){
+        var e = b.estimate;
+        if (!e) return "";
+        var h = '<div class="est-box"><h4>Estimate #'+e.number+' — created by this service call</h4>';
+        h += '<div class="est-status">'+(
+          e.status==="issued" ? "Issued after the pro performed the call · awaiting your acceptance" :
+          e.status==="accepted" ? "Accepted · forwarded to completion — pledge the asset to continue" :
+          e.status==="pledged" ? "Asset pledged · ready to pay for the job" :
+          "Paid · completion work scheduled")+'</div>';
+        e.items.forEach(function(it){
+          h += '<div class="q-line"><span>'+esc(it[0])+'</span><b>'+money(it[1])+'</b></div>';
+        });
+        h += '<div class="q-total"><span>Estimate total</span><b>'+money(e.total)+'</b></div>';
+        if (e.status === "issued") h += '<div class="booking-actions"><button class="btn primary small" data-act="accept" data-ref="'+b.ref+'">Accept estimate → forward to completion</button></div>';
+        if (e.status === "accepted") h += '<div class="booking-actions"><button class="btn blue small" data-act="pledge" data-ref="'+b.ref+'">Pledge the asset</button></div><p style="margin:.55rem 0 0;font-size:.86rem;color:var(--muted);">Pledging ties '+esc(b.address)+' to Estimate #'+e.number+' for '+money(e.total)+' — the step that forwards the accepted estimate into the payment and completion flow.</p>';
+        if (e.status === "pledged") h += '<div class="booking-actions"><button class="btn gold small" data-act="payjob" data-ref="'+b.ref+'">Pay '+money(e.total)+' for the job</button></div><p style="margin:.55rem 0 0;font-size:.86rem;color:var(--muted);">Charged to '+esc(b.cardBrand)+' ··'+esc(b.cardLast4)+' on file. Earns '+Math.floor(e.total/100)+' APEX⭐.</p>';
+        if (e.status === "paid") h += '<p style="margin:.55rem 0 0;font-size:.9rem;color:var(--ok);font-weight:700;">✓ Job paid — '+Math.floor(e.total/100)+' APEX⭐ earned. Completion is scheduled and tracked from here.</p>';
+        return h + '</div>';
+      }
+      function renderBookings(){
+        var list = $("bookingList");
+        $("bookingCount").textContent = state.bookings.filter(function(b){ return !b.cancelled; }).length;
+        if (!state.bookings.length) {
+          list.innerHTML = '<div class="card empty"><b>No bookings yet</b>Your service calls will appear here, tracked from booked to completed.'
+            + '<div class="wiz-nav" style="justify-content:center;"><button class="btn primary" id="emptyBook">Book a service</button>'
+            + '<button class="btn" id="emptyRestore">Restore example bookings</button></div></div>';
+          $("emptyBook").addEventListener("click", function(){ showView("book"); });
+          $("emptyRestore").addEventListener("click", function(){
+            var fresh = seedState(); state.bookings = fresh.bookings; state.activity = fresh.activity;
+            saveState(); syncChrome(); renderBookings();
+            toast("Example bookings restored");
+          });
+          return;
+        }
+        list.innerHTML = state.bookings.map(function(b){
+          var svc = svcByKey[b.service];
+          var h = '<article class="card booking">';
+          h += '<div class="booking-top"><div><h3>'+esc(svc.name)+' service call · <span class="mono">'+esc(b.ref)+'</span></h3>'
+            + '<div class="booking-sub">'+esc(b.address)+' · '+esc(fmtDate(b.date))+' · '+esc(b.win)+'</div></div>'
+            + statusPill(b) + '</div>';
+          if (!b.cancelled) h += trackerHTML(b);
+          h += '<div class="booking-grid">'
+            + '<div><span>Owner</span><b>'+esc(b.name)+'</b></div>'
+            + '<div><span>Pro</span><b>'+esc(b.pro.name)+'</b></div>'
+            + '<div><span>Urgency / Dispatch</span><b>'+URGENCY[b.urgency].label+' · '+DISPATCH[b.dispatch].label+'</b></div>'
+            + '<div><span>Service call paid</span><b>'+money(b.total)+' · '+esc(b.cardBrand)+' ··'+esc(b.cardLast4)+'</b></div>'
+            + '<div><span>APEX earned</span><b>'+(b.cancelled ? "0" : b.stars)+' APEX⭐</b></div>'
+            + '</div>';
+          if (b.desc) h += '<p style="margin:.8rem 0 0;color:var(--muted);font-size:.92rem;">'+esc(b.desc)+'</p>';
+          if (b.cancelled) {
+            h += '<p style="margin:.8rem 0 0;color:var(--bad);font-weight:600;font-size:.92rem;">Cancelled — '+money(b.total)+' refunded to '+esc(b.cardBrand)+' ··'+esc(b.cardLast4)+'. APEX⭐ from this booking were removed.</p>';
+          } else {
+            h += '<div class="booking-actions">';
+            if (b.statusIdx < 3) {
+              var nextLabel = ["Dispatch the pro","Mark pro on site","Complete the service call"][b.statusIdx];
+              h += '<button class="btn primary small" data-act="advance" data-ref="'+b.ref+'">'+nextLabel+' →</button>';
+              h += '<button class="btn ghost-danger small" data-act="cancel" data-ref="'+b.ref+'">Cancel &amp; refund</button>';
+            } else if (!b.estimate) {
+              h += '<span style="font-size:.9rem;color:var(--muted);">Issuing the estimate from this call…</span>';
+            }
+            h += '</div>';
+            if (b.statusIdx === 3) h += estimateHTML(b);
+          }
+          return h + '</article>';
+        }).join("");
+        list.querySelectorAll("[data-act]").forEach(function(btn){
+          btn.addEventListener("click", function(){ bookingAction(btn.getAttribute("data-act"), btn.getAttribute("data-ref"), btn); });
+        });
+      }
+      function findBooking(ref){ return state.bookings.filter(function(b){ return b.ref===ref; })[0]; }
+
+      function bookingAction(act, ref, btn){
+        var b = findBooking(ref); if (!b) return;
+        if (act === "advance") {
+          b.statusIdx = Math.min(3, b.statusIdx + 1);
+          if (b.statusIdx === 3 && !b.estimate) {
+            var items = ESTIMATES[b.service].map(function(it){ return [it[0], it[1]]; });
+            var total = items.reduce(function(s, it){ return s + it[1]; }, 0);
+            b.estimate = { number: state.estSeq++, items: items, total: total, status: "issued" };
+            toast("Call completed — Estimate #"+b.estimate.number+" issued ("+money(total)+")");
+          } else {
+            toast(ref+" — "+STATUSES[b.statusIdx]);
+          }
+        }
+        if (act === "cancel") {
+          if (btn.getAttribute("data-confirm") !== "1") {
+            btn.setAttribute("data-confirm","1");
+            btn.textContent = "Confirm cancel — refund "+money(b.total)+"?";
+            setTimeout(function(){ if (document.body.contains(btn)) { btn.removeAttribute("data-confirm"); btn.textContent = "Cancel & refund"; } }, 3500);
+            return;
+          }
+          b.cancelled = true;
+          if (b.apexSpent) state.activity.unshift({ text:"APEX⭐ restored — booking "+ref+" cancelled", delta:2 });
+          state.activity.unshift({ text:"Booking "+ref+" cancelled — "+money(b.total)+" refunded", delta:0 });
+          toast(ref+" cancelled — "+money(b.total)+" refunded");
+        }
+        if (act === "accept") { b.estimate.status = "accepted"; toast("Estimate #"+b.estimate.number+" accepted — forwarded to completion"); }
+        if (act === "pledge") { b.estimate.status = "pledged"; toast("Asset pledged against Estimate #"+b.estimate.number); }
+        if (act === "payjob") {
+          b.estimate.status = "paid";
+          var earned = Math.floor(b.estimate.total/100);
+          state.activity.unshift({ text:"APEX⭐ earned — job payment, Estimate #"+b.estimate.number, delta:earned });
+          toast("Job paid — "+money(b.estimate.total)+" · +"+earned+" APEX⭐");
+        }
+        saveState(); syncChrome(); renderBookings();
+      }
+
+      /* ---------------- APEX ---------------- */
+      function tierLabel(balance, cost){
+        if (balance >= cost) return "Unlocked — "+balance+" of "+cost+" APEX⭐";
+        return balance+" of "+cost+" APEX⭐ · "+(cost-balance)+" to go";
+      }
+      function renderApex(){
+        var bal = apexBalance();
+        $("apexBalanceBig").textContent = bal;
+        $("apexHeroText").textContent = bal >= 50
+          ? "Top tier reached — a free APEX-MS-004 is yours to redeem below."
+          : "Every $100 through the loop adds a star. "+(bal >= 5 ? "You have a free Consultation waiting below." : (5-bal)+" more star"+(5-bal===1?"":"s")+" unlocks a free Consultation.");
+        [["tier2",2],["tier5",5],["tier50",50]].forEach(function(pair){
+          $("bar-"+pair[0]).style.width = Math.min(100, Math.round(bal/pair[1]*100)) + "%";
+          $("label-"+pair[0]).textContent = tierLabel(bal, pair[1]);
+        });
+        $("redeemConsult").disabled = bal < 5;
+        $("redeemMs004").disabled = bal < 50;
+        var h = "";
+        if (!state.activity.length) h = '<li><span>No activity yet — book a service call to earn your first APEX⭐.</span><b></b></li>';
+        state.activity.slice(0, 14).forEach(function(a){
+          h += '<li><span>'+esc(a.text)+'</span><b>'+(a.delta > 0 ? "+"+a.delta : a.delta < 0 ? a.delta : "—")+'</b></li>';
+        });
+        $("apexHistory").innerHTML = h;
+      }
+      $("redeemConsult").addEventListener("click", function(){
+        if (apexBalance() < 5) return;
+        state.redemptions.push({ type:"consultation", stars:5 });
+        state.activity.unshift({ text:"APEX⭐ redeemed — free Consultation", delta:-5 });
+        saveState(); syncChrome(); renderApex();
+        toast("Consultation redeemed — the Middleton Solutions team will reach out to schedule");
+      });
+      $("redeemMs004").addEventListener("click", function(){
+        if (apexBalance() < 50) return;
+        state.redemptions.push({ type:"apex-ms-004", stars:50 });
+        state.activity.unshift({ text:"APEX⭐ redeemed — free APEX-MS-004", delta:-50 });
+        saveState(); syncChrome(); renderApex();
+        toast("APEX-MS-004 redeemed through the Mastercard rewards program");
+      });
+
+      /* ---------------- Chrome sync / init ---------------- */
+      function syncChrome(){
+        $("apexPillBalance").textContent = apexBalance();
+        $("bookingCount").textContent = state.bookings.filter(function(b){ return !b.cancelled; }).length;
+      }
+      (function init(){
+        var d = new Date(); d.setDate(d.getDate()+1);
+        var iso = d.toISOString().slice(0,10);
+        $("fDate").min = new Date().toISOString().slice(0,10);
+        $("fDate").value = iso;
+        renderServices();
+        syncChrome();
+      })();
+    })();
+    </script>
+  </body>
+</html>

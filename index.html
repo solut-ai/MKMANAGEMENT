@@ -102,6 +102,9 @@
         min-height:2.5rem;
       }
       .apex-pill svg{ flex:none; }
+      .apex-full{ display:inline-flex; align-items:center; gap:.35rem; }
+      .apex-full svg{ flex:none; }
+      .apex-full .apex-tab-balance{ font-weight:800; }
       .label-short{ display:none; }
       /* Condensed sticky menu on mobile: slim brand row, tabs on their own tight row */
       @media (max-width:640px){
@@ -112,7 +115,7 @@
         .brand-sub{ display:none; }
         .label-full{ display:none; }
         .label-short{ display:inline; }
-        /* Rewards is a single combined button on mobile: the tab carries the star balance, so the separate pill goes away */
+        /* APEX is a single combined button on mobile: the tab states the APEX count, so the separate pill goes away */
         .apex-pill{ display:none; }
         .apex-short{ display:inline-flex; align-items:center; gap:.28rem; }
         .apex-short svg{ flex:none; }
@@ -466,7 +469,7 @@
           <button class="tab" role="tab" id="tab-book" aria-selected="true" data-view="book"><span class="label-full">Book a service</span><span class="label-short">Book</span></button>
           <button class="tab" role="tab" id="tab-hub" aria-selected="false" data-view="hub"><span class="label-full">Plug-In Hub</span><span class="label-short">Plug-in</span></button>
           <button class="tab" role="tab" id="tab-bookings" aria-selected="false" data-view="bookings">My Bookings <span class="count" id="bookingCount">0</span></button>
-          <button class="tab" role="tab" id="tab-apex" aria-selected="false" data-view="apex" aria-label="APEX Rewards"><span class="label-full">APEX Rewards</span><span class="label-short apex-short"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z" fill="#FFD700"/></svg><span id="apexTabBalance">0</span> Rewards</span></button>
+          <button class="tab" role="tab" id="tab-apex" aria-selected="false" data-view="apex" aria-label="0 APEX"><span class="label-full apex-full"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z" fill="#FFD700"/></svg><span class="apex-tab-balance" id="apexTabBalanceFull">0</span> APEX</span><span class="label-short apex-short"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z" fill="#FFD700"/></svg><span class="apex-tab-balance" id="apexTabBalance">0</span> APEX</span></button>
         </nav>
         <span class="apex-pill" title="Your APEX balance">
           <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z" fill="#FFD700"/></svg>
@@ -1399,9 +1402,11 @@
 
       /* ---------------- Chrome sync / init ---------------- */
       function syncChrome(){
-        $("apexPillBalance").textContent = apexBalance();
-        var tabBal = $("apexTabBalance");
-        if (tabBal) tabBal.textContent = apexBalance();
+        var bal = apexBalance();
+        $("apexPillBalance").textContent = bal;
+        document.querySelectorAll(".apex-tab-balance").forEach(function(el){ el.textContent = bal; });
+        var tabApex = $("tab-apex");
+        if (tabApex) tabApex.setAttribute("aria-label", bal + " APEX");
         $("bookingCount").textContent = state.bookings.filter(function(b){ return !b.cancelled; }).length;
       }
       (function init(){

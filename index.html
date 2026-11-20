@@ -110,8 +110,8 @@
         .brand-name{ font-size:.92rem; }
         .brand-sub{ display:none; }
         .apex-pill{ margin-left:auto; min-height:2rem; padding:.25rem .6rem; font-size:.8rem; gap:.3rem; }
-        .tabs{ order:3; flex:1 1 100%; margin-left:0; gap:.3rem; flex-wrap:nowrap; }
-        .tab{ flex:1; justify-content:center; min-height:2rem; padding:.25rem .35rem; font-size:.78rem; gap:.3rem; white-space:nowrap; }
+        .tabs{ order:3; flex:1 1 100%; margin-left:0; gap:.25rem; flex-wrap:nowrap; }
+        .tab{ flex:1; justify-content:center; min-height:2rem; padding:.25rem .2rem; font-size:.72rem; gap:.25rem; white-space:nowrap; }
         .tab .count{ font-size:.66rem; padding:.02rem .35rem; }
       }
 
@@ -303,6 +303,76 @@
       .est-example h3{ margin:0; font-size:1.1rem; }
       .est-example .addr{ color:var(--muted); font-size:.92rem; }
 
+      /* ---------- Plug-In Hub ---------- */
+      .hub-hero{
+        margin:1.4rem 0 1.2rem; border-radius:20px; overflow:hidden; position:relative;
+        background:var(--blue); color:#EAF3F8; box-shadow:var(--shadow); padding:2rem 1.6rem 1.7rem;
+      }
+      .hub-hero h2{ margin:0 0 .55rem; font-size:clamp(1.7rem,4vw,2.5rem); line-height:1.05; font-weight:900; letter-spacing:-.01em; max-width:18ch; }
+      .hub-hero h2 .grad{ background:var(--helio); -webkit-background-clip:text; background-clip:text; color:transparent; }
+      .hub-hero p{ margin:0; max-width:62ch; color:#C4DCEA; font-size:1rem; }
+      .hub-diagram{
+        display:flex; align-items:stretch; gap:.6rem; flex-wrap:wrap; margin-top:1.4rem;
+      }
+      .hub-node{
+        background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.22); border-radius:12px;
+        padding:.7rem .9rem; font-size:.86rem; font-weight:700; color:#EAF3F8; display:flex; align-items:center;
+      }
+      .hub-center{
+        background:var(--gold); color:#231a00; border-color:var(--gold); font-weight:900; letter-spacing:.02em;
+        box-shadow:0 8px 22px -8px rgba(255,215,0,.55);
+      }
+      .hub-arrow{ align-self:center; color:var(--gold); font-weight:900; }
+      .compare-grid{ display:grid; grid-template-columns:1fr 1fr; gap:.9rem; margin-top:1rem; }
+      @media (max-width:760px){ .compare-grid{ grid-template-columns:1fr; } }
+      .compare{ padding:1.15rem; }
+      .compare h3{ margin:0 0 .5rem; font-size:1.02rem; }
+      .compare ul{ margin:0; padding-left:1.1rem; color:var(--muted); font-size:.92rem; display:grid; gap:.3rem; }
+      .compare.after{ border-color:var(--green); box-shadow:0 0 0 3px rgba(62,142,65,.14), var(--shadow-sm); }
+      .compare .kicker{ font-size:.72rem; letter-spacing:.13em; text-transform:uppercase; font-weight:800; color:var(--faint); display:block; margin-bottom:.4rem; }
+      .compare.after .kicker{ color:var(--ok); }
+      .core-grid{ display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+      @media (max-width:820px){ .core-grid{ grid-template-columns:1fr; } }
+      .core-card{ padding:1.25rem; position:relative; overflow:hidden; }
+      .core-card::before{ content:""; position:absolute; top:0; left:0; right:0; height:4px; background:var(--helio); }
+      .core-card.square::before{ background:var(--blue); }
+      @media (prefers-color-scheme: dark){ .core-card.square::before{ background:var(--gold); } }
+      .core-card.stripe::before{ background:var(--green); }
+      .core-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+      .core-top h3{ margin:0; font-size:1.3rem; font-weight:900; letter-spacing:-.01em; }
+      .core-top .role{ color:var(--muted); font-size:.9rem; margin-top:.15rem; max-width:36ch; }
+      .core-badge{
+        flex:none; font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+        border-radius:999px; padding:.3rem .65rem; white-space:nowrap;
+      }
+      .badge-core{ background:rgba(3,43,68,.09); color:var(--blue); }
+      @media (prefers-color-scheme: dark){ .badge-core{ background:rgba(255,255,255,.13); color:#BFE0F2; } }
+      .badge-pay{ background:rgba(62,142,65,.14); color:var(--ok); }
+      .core-card ul{ margin:.9rem 0 0; padding:0; list-style:none; display:grid; gap:.5rem; }
+      .core-card ul li{ display:flex; gap:.6rem; align-items:flex-start; font-size:.93rem; }
+      .core-card ul li::before{ content:"✓"; flex:none; width:1.3rem; height:1.3rem; border-radius:50%; background:var(--green); color:#fff; display:grid; place-items:center; font-size:.72rem; font-weight:900; margin-top:.12rem; }
+      .core-card ul li b{ flex:none; }
+      .core-card ul li span{ color:var(--muted); }
+      .core-note{ margin-top:1rem; font-size:.88rem; color:var(--muted); border-top:1px dashed var(--line); padding-top:.8rem; }
+      .core-note b{ color:var(--ink); }
+      .plat-section-label{ display:flex; align-items:baseline; gap:.8rem; flex-wrap:wrap; margin:1.8rem 0 .8rem; }
+      .plat-section-label h3{ margin:0; font-size:1.15rem; font-weight:900; }
+      .plat-section-label p{ margin:0; color:var(--muted); font-size:.9rem; }
+      .plat-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(255px,1fr)); gap:.8rem; }
+      .plat{ padding:1rem 1.05rem; display:flex; flex-direction:column; gap:.35rem; }
+      .plat .plat-head{ display:flex; align-items:center; justify-content:space-between; gap:.7rem; }
+      .plat b.name{ font-size:1.02rem; }
+      .plat-tag{ font-size:.68rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; border-radius:999px; padding:.22rem .55rem; white-space:nowrap; background:var(--surface-2); border:1px solid var(--line); color:var(--muted); }
+      .plat-tag.working{ background:rgba(62,142,65,.13); border-color:transparent; color:var(--ok); }
+      .plat-tag.affiliate{ background:rgba(255,215,0,.16); border-color:transparent; color:var(--warn); }
+      .plat p{ margin:0; color:var(--muted); font-size:.88rem; line-height:1.45; }
+      .plat .connects{ margin-top:auto; padding-top:.55rem; border-top:1px dashed var(--line); font-size:.86rem; }
+      .plat .connects span{ display:block; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; font-weight:800; color:var(--faint); margin-bottom:.15rem; }
+      .hub-teaser{ margin-top:1rem; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; background:var(--blue); color:#EAF3F8; border:none; }
+      .hub-teaser h3{ margin:0 0 .25rem; font-size:1.12rem; color:#fff; }
+      .hub-teaser p{ margin:0; color:#C4DCEA; font-size:.92rem; max-width:58ch; }
+      .hub-teaser .names{ font-weight:700; color:var(--gold); }
+
       /* Bookings */
       .booking{ padding:1.15rem; margin-bottom:1rem; }
       .booking-top{ display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:baseline; justify-content:space-between; }
@@ -387,6 +457,7 @@
         </a>
         <nav class="tabs" role="tablist" aria-label="Site sections">
           <button class="tab" role="tab" id="tab-book" aria-selected="true" data-view="book">Book a service</button>
+          <button class="tab" role="tab" id="tab-hub" aria-selected="false" data-view="hub">Plug-In Hub</button>
           <button class="tab" role="tab" id="tab-bookings" aria-selected="false" data-view="bookings">My Bookings <span class="count" id="bookingCount">0</span></button>
           <button class="tab" role="tab" id="tab-apex" aria-selected="false" data-view="apex">APEX Rewards</button>
         </nav>
@@ -572,6 +643,182 @@
           </div>
           <div class="note-box" style="margin-top:.9rem;">This is the estimate the service call creates. The owner received it after the electrician performed the call — from here it carries one path: <b>accept it to forward the job to completion, pledge the asset, and pay for the job.</b> Find it live on the electrical booking in My Bookings and run it through.</div>
         </div>
+
+        <div class="card hub-teaser">
+          <div style="flex:1 1 320px;">
+            <h3>One hub for the broken PM flow</h3>
+            <p>MKMANAGEMENT is the plug-and-play hub the other platforms connect into — <span class="names">Square · Stripe · HouseCall Pro · PayProTec</span> and the property &amp; field-service systems operators already run. No more running Square and HouseCall Pro as two separate platforms.</p>
+          </div>
+          <button class="btn gold" id="openHub">Explore the Plug-In Hub →</button>
+        </div>
+      </section>
+
+      <!-- ============ PLUG-IN HUB VIEW ============ -->
+      <section class="view" id="view-hub">
+        <div class="hub-hero">
+          <h2>The Plug-In Hub.<br /><span class="grad">One app. Every platform connects.</span></h2>
+          <p>MKMANAGEMENT is a single plug-and-play application for managing the broken property-management flow. Instead of running Square for payments and HouseCall Pro for job flow as two separate, cumbersome platforms, operators plug the systems they already use directly into one hub — where the job is booked, matched, priced, estimated, and paid.</p>
+          <div class="hub-diagram" aria-label="How platforms connect through the hub">
+            <span class="hub-node">Square · Stripe · PayProTec</span><span class="hub-arrow">→</span>
+            <span class="hub-node hub-center">MKMANAGEMENT HUB</span><span class="hub-arrow">→</span>
+            <span class="hub-node">PM platforms · Field-service platforms</span>
+          </div>
+        </div>
+
+        <div class="compare-grid">
+          <div class="card compare">
+            <span class="kicker">Before — two platforms</span>
+            <h3>Square + HouseCall Pro, side by side</h3>
+            <ul>
+              <li>Square runs payments, subscriptions, and inventory — but not the job flow.</li>
+              <li>HouseCall Pro manages the job flow Square doesn't provide.</li>
+              <li>Two logins, two records, and management split across both.</li>
+            </ul>
+          </div>
+          <div class="card compare after">
+            <span class="kicker">With the hub — one application</span>
+            <h3>Everything plugs into MKMANAGEMENT</h3>
+            <ul>
+              <li>Booking, matching, job flow, estimates, and payment in one place.</li>
+              <li>Square stays the operations backbone — the hub connects to it, it isn't ripped out.</li>
+              <li>Every other platform connects directly to the same hub.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <h2>How Square &amp; Stripe power the build</h2>
+          <p>These are the working connections the hub is built on. Square is the operations backbone; Stripe is the payments connection alongside it.</p>
+        </div>
+        <div class="core-grid">
+          <div class="card core-card square">
+            <div class="core-top">
+              <div>
+                <h3>Square</h3>
+                <div class="role">Our service inventory and operations backbone — the connection that has carried the business.</div>
+              </div>
+              <span class="core-badge badge-core">Core connection</span>
+            </div>
+            <ul>
+              <li><b>Service inventory</b><span> — Square keeps the inventory of services: the nine service lines and their rates live there.</span></li>
+              <li><b>Invoice delivery</b><span> — estimates and invoices are delivered through Square, like Estimate #100123.</span></li>
+              <li><b>Booking management</b><span> — bookings are managed against the Square record.</span></li>
+              <li><b>Customer service</b><span> — customer records and service history run through Square.</span></li>
+              <li><b>Merchant management</b><span> — merchant services, payments, and subscriptions run through Square.</span></li>
+              <li><b>Square Appointments</b><span> — hooks connect Square Appointments to the hub backend, so scheduled calls sync with the booking loop.</span></li>
+            </ul>
+            <p class="core-note"><b>Why it matters:</b> the hub doesn't replace Square — it plugs straight into it, so the inventory, invoices, and merchant operation operators already trust stay exactly where they are.</p>
+          </div>
+          <div class="card core-card stripe">
+            <div class="core-top">
+              <div>
+                <h3>Stripe</h3>
+                <div class="role">The payments connection alongside Square — the second rail for taking and moving money through the hub.</div>
+              </div>
+              <span class="core-badge badge-pay">Payments</span>
+            </div>
+            <ul>
+              <li><b>Card payments</b><span> — service calls and job payments taken through Stripe alongside Square.</span></li>
+              <li><b>Online checkout</b><span> — owners pay from the booking, wherever the property is.</span></li>
+              <li><b>Payouts</b><span> — pros and merchants are paid out through the payments flow the hub settles.</span></li>
+              <li><b>One record</b><span> — Stripe payments reconcile into the same booking and estimate record as Square.</span></li>
+            </ul>
+            <p class="core-note"><b>How the two fit:</b> Square holds the inventory and runs the operation; Stripe extends the payment options beside it. The hub is where both meet the job — one booking, one estimate, one payment record, whichever rail the payment rides.</p>
+          </div>
+        </div>
+
+        <div class="plat-section-label">
+          <h3>Also in the hub</h3>
+          <p>The job-flow platform and our payments affiliate.</p>
+        </div>
+        <div class="plat-grid">
+          <div class="card plat">
+            <div class="plat-head"><b class="name">HouseCall Pro</b><span class="plat-tag">Job flow</span></div>
+            <p>Field-service platform for scheduling, dispatching, and managing jobs in the field — the job flow Square doesn't provide.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Job-flow history and workflow — operators coming from HouseCall Pro bring it into the one hub instead of running it as a second platform.</div>
+          </div>
+          <div class="card plat">
+            <div class="plat-head"><b class="name">PayProTec</b><span class="plat-tag affiliate">Affiliate</span></div>
+            <p>A smaller payments operator and MKMANAGEMENT affiliate for merchant processing.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Payment processing — connected to the hub so a smaller operator gains the booking and job flow around its payments.</div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <h2>Platforms operators already use</h2>
+          <p>MKMANAGEMENT is the connection point, not a rip-and-replace. These are the top platforms property managers and contractors already run — each one plugs into the hub, so the system they know stays and the broken handoffs between them go away.</p>
+        </div>
+
+        <div class="plat-section-label">
+          <h3>Property management</h3>
+          <p>Where the portfolio, leases, and residents live.</p>
+        </div>
+        <div class="plat-grid">
+          <div class="card plat">
+            <div class="plat-head"><b class="name">AppFolio</b><span class="plat-tag">Property mgmt</span></div>
+            <p>Property management software for residential and commercial portfolios — leasing, rent, and maintenance in one system.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Maintenance requests and work orders flowing straight into the booking loop.</div>
+          </div>
+          <div class="card plat">
+            <div class="plat-head"><b class="name">Yardi</b><span class="plat-tag">Property mgmt</span></div>
+            <p>Enterprise real estate and property management platform used by large portfolios and institutional operators.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Property and unit data, so service calls are booked against the right asset and record.</div>
+          </div>
+          <div class="card plat">
+            <div class="plat-head"><b class="name">Entrata</b><span class="plat-tag">Property mgmt</span></div>
+            <p>Multifamily operating system covering leasing, residents, accounting, and property operations.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Resident service requests and scheduling, routed into matched-pro dispatch.</div>
+          </div>
+          <div class="card plat">
+            <div class="plat-head"><b class="name">RealPage</b><span class="plat-tag">Property mgmt</span></div>
+            <p>Property management and data platform for multifamily portfolios, from leasing to accounting.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Portfolio data and maintenance dispatch across large property sets.</div>
+          </div>
+          <div class="card plat">
+            <div class="plat-head"><b class="name">Buildium</b><span class="plat-tag">Property mgmt</span></div>
+            <p>Property management software for residential managers, associations, and growing portfolios.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Tenant requests and vendor jobs, booked and tracked through the loop.</div>
+          </div>
+          <div class="card plat">
+            <div class="plat-head"><b class="name">DoorLoop</b><span class="plat-tag">Property mgmt</span></div>
+            <p>All-in-one rental property management software for properties of every size.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Work orders and owner bookings, without leaving the system the manager already runs.</div>
+          </div>
+        </div>
+
+        <div class="plat-section-label">
+          <h3>Field service &amp; contractors</h3>
+          <p>Where the trades run dispatch, jobs, and crews.</p>
+        </div>
+        <div class="plat-grid">
+          <div class="card plat">
+            <div class="plat-head"><b class="name">ServiceTitan</b><span class="plat-tag">Field service</span></div>
+            <p>End-to-end field-service platform for HVAC, plumbing, and electrical contractors.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Dispatch, technician scheduling, and job history for matched calls.</div>
+          </div>
+          <div class="card plat">
+            <div class="plat-head"><b class="name">Jobber</b><span class="plat-tag">Field service</span></div>
+            <p>Job management for home-service businesses — quoting, scheduling, invoicing, and payments.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Jobs and invoices, so a small crew's existing flow connects to hub bookings.</div>
+          </div>
+          <div class="card plat">
+            <div class="plat-head"><b class="name">FieldPulse</b><span class="plat-tag">Field service</span></div>
+            <p>Field-service management app for contractors — scheduling, estimates, and customer records.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Field jobs and estimates created on site, tied to the hub's booking record.</div>
+          </div>
+          <div class="card plat">
+            <div class="plat-head"><b class="name">Workiz</b><span class="plat-tag">Field service</span></div>
+            <p>Field-service and dispatch platform for service businesses, from locksmiths to junk removal and the trades.</p>
+            <div class="connects"><span>Plugs into the hub for</span>Dispatch and live job tracking alongside hub-matched work.</div>
+          </div>
+          <div class="card plat">
+            <div class="plat-head"><b class="name">ServiceM8</b><span class="plat-tag">Field service</span></div>
+            <p>Mobile-first job management for trades and services — booking through to invoicing in the field.</p>
+            <div class="connects"><span>Plugs into the hub for</span>The mobile job flow, so field completion feeds back into the hub record.</div>
+          </div>
+        </div>
+
+        <div class="note-box" style="margin-top:1.2rem;"><b>The hub is the connection point.</b> Square and Stripe are the connections the build runs on today. The market platforms above are the systems operators already use — MKMANAGEMENT is built for them to plug into, so a company keeps its platform and gains one booking, job, and payment flow across all of them.</div>
       </section>
 
       <!-- ============ BOOKINGS VIEW ============ -->
@@ -764,7 +1011,7 @@
 
       /* ---------------- Views ---------------- */
       function showView(name){
-        ["book","bookings","apex"].forEach(function(v){
+        ["book","hub","bookings","apex"].forEach(function(v){
           $("view-"+v).classList.toggle("active", v===name);
           $("tab-"+v).setAttribute("aria-selected", v===name ? "true" : "false");
         });
@@ -776,6 +1023,7 @@
         tab.addEventListener("click", function(){ showView(tab.getAttribute("data-view")); });
       });
       $("brandHome").addEventListener("click", function(e){ e.preventDefault(); showView("book"); });
+      $("openHub").addEventListener("click", function(){ showView("hub"); });
 
       /* ---------------- Wizard ---------------- */
       var sel = { service:null, urgency:"standard", dispatch:"scheduled", useApex:false };
